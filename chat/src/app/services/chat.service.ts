@@ -40,7 +40,7 @@ export class ChatService {
     const uid = credential.user.uid;
  
     return this.afs.doc(
-      `usuarios/${uid}`
+      `users/${uid}`
     ).set({
       uid,
       email: credential.user.email,
@@ -59,7 +59,7 @@ export class ChatService {
 
   //parte 2
   addChatMessage(msg) {
-    return this.afs.collection('mensajes').add({
+    return this.afs.collection('messages').add({
       msg: msg,
       from: this.currentUser.uid,
       createdAt: new Date,
