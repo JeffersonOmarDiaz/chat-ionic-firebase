@@ -11,7 +11,7 @@ export interface User {
 }
  
 export interface Message {
-  //createdAt: firebase.FieldValue;
+  createdAt: Date;
   id: string;
   from: string;
   msg: string;
@@ -24,6 +24,7 @@ export interface Message {
 })
 export class ChatService {
   currentUser: User = null;
+  elEmail = "";
   constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     this.afAuth.onAuthStateChanged((user) => {
       this.currentUser = user;      
@@ -39,7 +40,7 @@ export class ChatService {
     const uid = credential.user.uid;
  
     return this.afs.doc(
-      `users/${uid}`
+      `usuarios/${uid}`
     ).set({
       uid,
       email: credential.user.email,
@@ -47,6 +48,7 @@ export class ChatService {
   }
  
   signIn({ email, password }) {
+    this.elEmail = email;
     return this.afAuth.signInWithEmailAndPassword(email, password);
   }
  
@@ -57,10 +59,11 @@ export class ChatService {
 
   //parte 2
   addChatMessage(msg) {
-    return this.afs.collection('messages').add({
+    return this.afs.collection('mensajes').add({
       msg: msg,
       from: this.currentUser.uid,
-      //createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: new Date,
+      email: this.elEmail
     });
   }
    
@@ -86,12 +89,15 @@ export class ChatService {
     return this.afs.collection('users').valueChanges({ idField: 'uid' }) as Observable<User[]>;
   }
    
-  private getUserForMsg(msgFromId, users: User[]): string {    
+  private getUserForMsg(msgFromId, users: User[]): string {  
+    let email = '';  
     for (let usr of users) {
       if (usr.uid == msgFromId) {
+        console.log(usr.email);
+        email= usr.email;
         return usr.email;
       }
     }
-    return 'Deleted';
+    return msgFromId;
   }
 }

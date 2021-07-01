@@ -42,7 +42,7 @@ export class LoginPage implements OnInit {
         async (err) => {
           loading.dismiss();
           const alert = await this.alertController.create({
-            header: 'Sign up failed',
+            header: 'Registro fallido',
             message: err.message,
             buttons: ['OK'],
           });

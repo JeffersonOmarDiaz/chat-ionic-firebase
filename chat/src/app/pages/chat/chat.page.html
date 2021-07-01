@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Open Chat</ion-title>
+    <ion-title>Chat   </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="signOut()">
         <ion-icon name="log-out" slot="icon-only"></ion-icon>
@@ -18,7 +18,8 @@
       [ngClass]="{ 'my-message': message.myMsg, 'other-message': !message.myMsg }">
       <ion-card>
         
-        <b>{{ message.fromName }}</b><br>
+        <b>usuario: {{ message.email }}</b><br>
+        <!-- <b>{{ message.fromName }}</b><br> -->
         <span>{{ message.msg }}
         </span>
         <div class="time ion-text-right"><br>{{ message.createdAt?.toMillis() | date:'short' }}</div>
